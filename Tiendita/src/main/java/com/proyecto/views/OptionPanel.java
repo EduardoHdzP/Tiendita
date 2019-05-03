@@ -10,28 +10,44 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 
 public class OptionPanel extends JPanel {
+	private JButton btnGuardar;
+	private JButton btnLimpiar;
+	private JButton btnSalir;
 
 	/**
 	 * Create the panel.
 	 */
 	public OptionPanel() {
-		setBackground(Color.ORANGE);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setBackground(Color.BLACK);
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
 		
-		JButton btnNewButton = new JButton("Guardar");
-		btnNewButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		btnNewButton.setFont(new Font("Sylfaen", Font.BOLD, 20));
-		add(btnNewButton);
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.setHorizontalTextPosition(SwingConstants.LEADING);
+		btnGuardar.setFont(new Font("Sylfaen", Font.BOLD, 20));
+		add(btnGuardar);
 		
-		JButton btnNewButton_1 = new JButton("Limpiar");
-		btnNewButton_1.setFont(new Font("Sylfaen", Font.BOLD, 20));
-		add(btnNewButton_1);
+		btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.setFont(new Font("Sylfaen", Font.BOLD, 20));
+		add(btnLimpiar);
 		
-		JButton btnNewButton_2 = new JButton("Salir");
-		btnNewButton_2.setFont(new Font("Sylfaen", Font.BOLD, 20));
-		add(btnNewButton_2);
-		
-		
+		btnSalir = new JButton("Salir");
+		btnSalir.setFont(new Font("Sylfaen", Font.BOLD, 20));
+		add(btnSalir);
 	}
+
+	public JButton getBtnGuardar() {
+		return btnGuardar;
+	}
+
+	public JButton getBtnLimpiar() {
+		return btnLimpiar;
+	}
+
+	public JButton getBtnSalir() {
+		return btnSalir;
+	}
+	
+	
+	
 
 }

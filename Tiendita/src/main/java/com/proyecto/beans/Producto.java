@@ -1,5 +1,7 @@
 package com.proyecto.beans;
 
+import java.util.Vector;
+
 public class Producto {
 	private int clave;
 	private String nombre;
@@ -64,6 +66,39 @@ public class Producto {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	@Override
+	public String toString() {
+		return "Producto [clave=" + clave + ", nombre=" + nombre + ", marca=" + marca + ", cambio=" + cambio
+				+ ", presentacion=" + presentacion + ", utilidad=" + utilidad + ", contenido=" + contenido
+				+ ", uMedida=" + uMedida + ", tipo=" + tipo + "]";
+	}
+	
+	/*
+	 * 
+	 * private int clave;
+	private String nombre;
+	private String marca;
+	private String cambio;
+	private String presentacion;
+	private float utilidad;
+	private float contenido;
+	private String uMedida;
+	private String tipo;*/
+	
+	public Vector<String> toVectorFormat(){
+		Vector<String> p=new Vector<String>();
+		p.add(String.valueOf(clave));
+		p.add(nombre);
+		p.add(marca);
+		p.add(cambio);
+		p.add(presentacion);
+		p.add(String.valueOf(utilidad));
+		p.add(String.valueOf(contenido));
+		p.add(uMedida);
+		p.add(tipo);
+
+		return p;
 	}
 	
 	

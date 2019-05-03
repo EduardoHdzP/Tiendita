@@ -30,6 +30,9 @@ public class Direccion {
 		this.colonia = colonia;
 	}
 	
+	public String formatear() {
+		return calle+" "+orientacion+" #"+numero+"col: "+colonia;
+	}
 	
 
 }

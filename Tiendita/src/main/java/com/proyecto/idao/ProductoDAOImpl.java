@@ -2,7 +2,9 @@ package com.proyecto.idao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -23,19 +25,10 @@ public class ProductoDAOImpl implements ProductoDAO{
 		// TODO Auto-generated method stub
 		String sql="INSERT INTO producto(cve_pro,nom_pro,marca_pro,cambio_pro,presentacion_pro,utilidad_pro,contenido_pro,umedida_pro,tipo_pro) "
 				+ "values(?,?,?,?,?,?,?,?,?)";
-		Connection con=null;
-		
+		Connection con=null;	
 		
 		try {
-			/*private int clave;
-			private String nombre;
-			private String marca;
-			private String cambio;
-			private String presentacion;
-			private float utilidad;
-			private float contenido;
-			private String uMedida;
-			private String tipo;*/
+			
 			con=dataSource.getConnection();
 			if(con==null)
 				System.out.println("Nulo");
@@ -55,7 +48,7 @@ public class ProductoDAOImpl implements ProductoDAO{
 			ps.close();
 			
 		} catch (SQLException e) {
-			System.out.println("ProductoDAO:Error al registrar: "+e.toString());
+			System.out.println("ProductoDAOImpl:Error al registrar: "+e.toString());
 		}finally {
 			if(con!=null) {
 				try {
@@ -70,28 +63,157 @@ public class ProductoDAOImpl implements ProductoDAO{
 
 	public List<Producto> listarTodos() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Producto> productos=new ArrayList<Producto>();
+		Producto p;
+		Connection con=null;	
+		ResultSet rs = null;
+		try {
+
+			con=dataSource.getConnection();
+			String consulta = "SELECT * FROM producto";
+			PreparedStatement sentencia= con.prepareStatement(consulta);
+			rs = sentencia.executeQuery();
+			while (rs.next()) {
+				p=new Producto();
+				p.setClave(rs.getInt("cve_pro"));
+				p.setNombre(rs.getString("nom_pro"));
+				p.setMarca(rs.getString("marca_pro"));
+				p.setCambio(rs.getString("cambio_pro"));
+				p.setPresentacion(rs.getString("presentacion_pro"));
+				p.setUtilidad(rs.getFloat("utilidad_pro"));
+				p.setContenido(rs.getFloat("contenido_pro"));
+				p.setuMedida(rs.getString("umedida_pro"));
+				p.setTipo(rs.getString("tipo_pro"));
+				productos.add(p);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error:ProductoDAOImpl:listarTodos:"+e.toString());
+		}
+		
+		return productos;
 	}
 
 	public List<Producto> buscarPorNombre(String nombre) {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Producto> productos=new ArrayList<Producto>();
+		Producto p;
+		Connection con=null;	
+		try {
+			con=dataSource.getConnection();
+			String consulta = "SELECT * FROM producto WHERE nom_pro like ?";
+			PreparedStatement sentencia= con.prepareStatement(consulta);
+			sentencia.setString(1, "%"+nombre+"%");
+			System.out.println(sentencia);
+			ResultSet rs = sentencia.executeQuery();
+			while (rs.next()) {
+				p=new Producto();
+				p.setClave(rs.getInt("cve_pro"));
+				p.setNombre(rs.getString("nom_pro"));
+				p.setMarca(rs.getString("marca_pro"));
+				p.setCambio(rs.getString("cambio_pro"));
+				p.setPresentacion(rs.getString("presentacion_pro"));
+				p.setUtilidad(rs.getFloat("utilidad_pro"));
+				p.setContenido(rs.getFloat("contenido_pro"));
+				p.setuMedida(rs.getString("umedida_pro"));
+				p.setTipo(rs.getString("tipo_pro"));
+				productos.add(p);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error:ProductoDAOImpl:buscarPorNombre:"+e.toString());
+		}
+			
+		
+		return productos;
 	}
 
 	public Producto buscarPorId(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		Producto p=null;
+		Connection con=null;	
+		try {
+			con=dataSource.getConnection();
+			String consulta = "SELECT * FROM producto WHERE cve_pro=?";
+			PreparedStatement sentencia= con.prepareStatement(consulta);
+			sentencia.setInt(1, id);
+			ResultSet rs = sentencia.executeQuery();
+			if (rs.next()) {
+				p=new Producto();
+				p.setClave(rs.getInt("cve_pro"));
+				p.setNombre(rs.getString("nom_pro"));
+				p.setMarca(rs.getString("marca_pro"));
+				p.setCambio(rs.getString("cambio_pro"));
+				p.setPresentacion(rs.getString("presentacion_pro"));
+				p.setUtilidad(rs.getFloat("utilidad_pro"));
+				p.setContenido(rs.getFloat("contenido_pro"));
+				p.setuMedida(rs.getString("umedida_pro"));
+				p.setTipo(rs.getString("tipo_pro"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error:ProductoDAOImpl:buscarPorId:"+e.toString());
+		}
+		return p;
 	}
 
 	public boolean actualizar(Producto t) {
 		
 		// TODO Auto-generated method stub
+		Connection con=null;	
+		try {
+			con=dataSource.getConnection();
+			String consulta = "UPDATE producto SET nom_pro = ?, marca_pro = ?, cambio_pro = ?, presentacion_pro = ?, utilidad_pro = ?, contenido_pro = ?, umedida_pro = ?, tipo_pro = ? WHERE cve_pro = ?";
+			
+			PreparedStatement sentencia= con.prepareStatement(consulta);
+			sentencia.setString(1, t.getNombre());
+			sentencia.setString(2, t.getMarca());
+			sentencia.setString(3, t.getCambio());
+			sentencia.setString(4, t.getPresentacion());
+			sentencia.setFloat(5, t.getUtilidad());
+			sentencia.setFloat(6, t.getContenido());
+			sentencia.setString(7, t.getuMedida());
+			sentencia.setString(8, t.getTipo());
+			sentencia.setInt(9, t.getClave());
+			int rs = sentencia.executeUpdate();
+			System.out.println("Resultado: "+rs);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error:ProductoDAOImpl:actualizar:"+e.toString());
+		}
 		return false;
 	}
 
 	public boolean eliminar(int id) {
 		// TODO Auto-generated method stub
+		Connection con=null;	
+		try {
+			con=dataSource.getConnection();
+			String consulta = "DELETE FROM producto WHERE cve_pro = ?";
+			
+			PreparedStatement sentencia= con.prepareStatement(consulta);
+			sentencia.setInt(1, id);
+			int rs = sentencia.executeUpdate();
+			System.out.println("Resultado: "+rs);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error:ProductoDAOImpl:eliminar:"+e.toString());
+		}
 		return false;
+	}
+
+	public boolean existe(String nombre) {
+		// TODO Auto-generated method stub
+		ArrayList<Producto>productos=(ArrayList<Producto>) buscarPorNombre(nombre);
+		if(productos.size()>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 
 }

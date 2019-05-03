@@ -6,6 +6,7 @@ public class Proveedor {
 	private String tel;
 	private Direccion direccion;
 	
+
 	public int getClave() {
 		return clave;
 	}
